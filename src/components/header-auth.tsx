@@ -1,4 +1,4 @@
-import { signOutAction } from "@/app/actions";
+import { signOutAction } from "@/src/services/actions";
 import { hasEnvVars } from "@/src/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
