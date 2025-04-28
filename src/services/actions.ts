@@ -52,7 +52,7 @@ export const signInAction = async (formData: FormData) => {
   const supabase = await createClient();
 
   if (!email || !password) {
-    return { error: "Email and password are required" };
+    return encodedRedirect("error", "/sign-in", "Email and password are required");
   }
 
   const { error } = await supabase.auth.signInWithPassword({
@@ -61,13 +61,17 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (error) {
-    return { error: error.message };
+    return encodedRedirect("error", "/sign-in", error.message);
   }
 
   // Force a session refresh
   const { data: { session } } = await supabase.auth.getSession();
 
-  return { success: true, session };
+  if (!session) {
+    return encodedRedirect("error", "/sign-in", "Failed to create session");
+  }
+
+  return redirect("/");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
